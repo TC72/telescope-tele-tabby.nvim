@@ -4,14 +4,13 @@ Add a tab list to Telescope with information about each tab's working directory.
 
 ## Requires
 
-`telescope` to both be installed.
+`telescope` to be installed.
 
 
 ## Exports
 
 `teletabby.list`
 - `require('telescope').extensions.tele_tabby.list()`
-- similar to `live_grep`, but more async-ish
 
 ## Configuration
 
