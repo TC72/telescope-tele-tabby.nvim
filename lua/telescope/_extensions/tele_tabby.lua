@@ -181,13 +181,15 @@ function make_entry(_)
     -- of the path which ncludes the filename
     -- this will not suit everyone, make an option to disable
     -- ]]
+
+    local path_end_highlight = state.use_highlighter and hl_group or nil
     return displayer {
       { entry.tabidx, "TelescopeResultsNumber"},
       { entry.indicator, "TelescopeResultsComment"},
       { icon, hl_group },
       { entry.path_start },
       { '/', "TelescopeResultsNumber" },
-      { entry.path_end, hl_group },
+      { entry.path_end, path_end_highlight },
       }
   end
 
@@ -227,17 +229,11 @@ local function set_config_state(opt_name, value, default)
   state[opt_name] = value == nil and default or value
 end
 
---[[
-return telescope.register_extension {
-  exports = {
-    list = list,
-  }
-}
---]]
 
 return telescope.register_extension {
   setup = function(ext_config)
   set_config_state('project_root', ext_config.project_root, '.git')
+  set_config_state('use_highlighter', ext_config.use_highlighter, true)
   end,
   exports = {
     list = list,
