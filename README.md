@@ -62,7 +62,7 @@ require('telescope').setup {
 ### Options
 | Keys            | Description                                | Options    |
 | --------------- | ------------------------------------------ | ---------- |
-| use_highligther | Use devicon colors for the end of the path | true/false |
+| use_highlighter | Use devicon colors for the end of the path | true/false |
 
 
 ## TODO
