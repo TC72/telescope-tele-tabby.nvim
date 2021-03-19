@@ -1,8 +1,8 @@
 # tele-tabby.nvim
 
-A tab switcher for Telescope with information about each tab's working directory.
+A tab switcher extension for Telescope with information about each tab's working directory.
 
-![Tab Preview](https://cln.sh/kQW3j3)
+![Tab Preview](https://www.digitalbakery.net/images/tele-tabby-preview.gif)
 
 Each Tab is shown with the path to the current buffer split into 2 parts.
 The first part is the path from the project root to the tab's cwd. The project root is found by looking for a .git file in the path.
