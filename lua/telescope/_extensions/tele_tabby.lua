@@ -17,6 +17,7 @@ local utils = require('telescope.utils')
 local log = require('telescope.log')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
+local scan = require'plenary.scandir'
 
 
 --[[
@@ -33,6 +34,27 @@ function goto_window(prompt_bufnr)
     -- entry.value gives us a window id
     -- this call switches to the tab containinfg the window
     vim.api.nvim_set_current_win( entry.value )
+end
+
+
+--[[
+-- thanks to conni for the fucntion
+-- use this instead of relying on lsp utils, we will always have plenary
+-- recursively search through directories for the pattern
+-- at each call add '/../' to move up the hierarchy
+-- stops when we get a match or we hit / root directory
+--]]
+
+local root_pattern
+root_pattern = function(start, pattern)
+  if start == '/' then return nil end
+  local res = scan.scan_dir(start, { search_pattern = pattern, hidden = true, add_dirs = true, depth = 1 })
+  if table.getn(res) == 0 then
+    local new = start .. '/../'
+    return root_pattern(vim.loop.fs_realpath(new), pattern)
+  else
+    return start
+  end
 end
 
 
@@ -79,7 +101,8 @@ local list = function(opts)
             -- find the "project root" from the cwd, for now look for .git
             -- TODO - allow a user to configure how we find the project root
             --local git_root = vim.fn.systemlist("git -C " .. cwd .. " rev-parse --show-toplevel")[1]
-            local git_root = require('lspconfig.util').root_pattern(".git")(cwd)
+            --local git_root = require('lspconfig.util').root_pattern(".git")(cwd)
+            git_root =  root_pattern(cwd, '%.git$')
 
             local project_root = vim.fn.expand( opts.project_root or git_root or cwd)
             -- include the parent directory of the .git file
