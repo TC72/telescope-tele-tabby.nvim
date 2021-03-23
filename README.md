@@ -8,7 +8,7 @@ Each Tab is shown with the path to the current buffer split into two parts.
 
 ![Tab Description](https://cln.sh/NlEExs+)
 
-The project root is found by searhcing for a .git file. The file is shown with devicon colors which can be disabled.
+The project root is found by searching for a .git file. The file is shown with devicon colors which can be disabled.
 If the buffer is not in the tab's cwd the full path is shown, this makes it easy to see a buffer which may have been opened in the wrong tab.
 
 The extension is useful for a worklow where each tab is given its own working directory with tcd.
