@@ -181,10 +181,6 @@ function make_entry(_)
     end
     -- ]]
 
-      --[[
-      -- IMPORTANT the lua library string formatter only allows strings up to 99 characters
-      -- make sure entry.path_start is not longer than 99 characters or the code will fail
-      -- ]]
       local displayer = entry_display.create {
         separator = "",
         items = {
@@ -201,7 +197,7 @@ function make_entry(_)
     local icon, hl_group = utils.get_devicons(entry.filename, disable_devicons)
 
     --[[ Using the hl_group from the devicons to color the end
-    -- of the path which ncludes the filename
+    -- of the path which includes the filename
     -- this will not suit everyone, make an option to disable
     -- ]]
 
@@ -220,8 +216,8 @@ function make_entry(_)
     local filename = entry.info.name
 
     --[[
-    -- Tese come from the buffer picker, not sure if we need them
-    -- but shwoing a window has an edited buffer is useful
+    -- These come from the buffer picker, not sure if we need them
+    -- but showing a window has an edited buffer is useful
     -- ]]
     local hidden = entry.info.hidden == 1 and 'h' or 'a'
     local readonly = vim.api.nvim_buf_get_option(entry.bufnr, 'readonly') and '=' or ' '
@@ -251,7 +247,6 @@ end
 local function set_config_state(opt_name, value, default)
   state[opt_name] = value == nil and default or value
 end
-
 
 return telescope.register_extension {
   setup = function(ext_config)

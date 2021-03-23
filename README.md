@@ -4,11 +4,11 @@ A tab switcher extension for Telescope with information about each tab's working
 
 ![Tab Preview](https://www.digitalbakery.net/images/tele-tabby-preview.gif)
 
-Each Tab is shown with the path to the current buffer split into 2 parts.
-The first part is the path from the project root to the tab's cwd. The project root is found by looking for a .git file in the path.
-The display includes the folder which contains the .git file as this normally gives the name of the project as shown in the screenshot for telescope.nvim and plenary.nvim.
-The end of the path is from the cwd to buffer file, this is highlighted using devicon colors, which can be disabled.
+Each Tab is shown with the path to the current buffer split into two parts.
 
+![Tab Description](https://cln.sh/NlEExs+)
+
+The project root is found by searhcing for a .git file. The file is shown with devicon colors which can be disabled.
 If the buffer is not in the tab's cwd the full path is shown, this makes it easy to see a buffer which may have been opened in the wrong tab.
 
 The extension is useful for a worklow where each tab is given its own working directory with tcd.
