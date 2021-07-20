@@ -12,7 +12,8 @@ local pickers      = require'telescope.pickers'
 local previewers   = require'telescope.previewers'
 local conf         = require('telescope.config').values
 local entry_display = require('telescope.pickers.entry_display')
-local path = require('telescope.path')
+local Path = require('plenary.path')
+local strings = require('plenary.strings')
 local utils = require('telescope.utils')
 local log = require('telescope.log')
 local sorters = require('telescope.sorters')
@@ -92,7 +93,7 @@ local list = function(opts)
                 selection_idx = idx
             end
 
-            -- the bufnr 
+            -- the bufnr
             local bufnr = vim.api.nvim_win_get_buf(windowid)
 
             -- find the cwd of this window, check in order of priority, lcd, tcd, cwd
@@ -110,13 +111,13 @@ local list = function(opts)
 
 
             -- split the path
-            -- path_start - from the project_root to the cwd, including the name 
+            -- path_start - from the project_root to the cwd, including the name
             -- path_end - from the cwd to the file
 
             --local path_start = path.normalize( cwd, project_root:gsub ('[^/]+/?$', '') )
-            local path_start = path.normalize( cwd, project_root )
+            local path_start = Path:new(cwd):normalize(project_root)
             local info = vim.fn.getbufinfo(bufnr)[1]
-            local path_end = path.normalize(info.name, cwd) or ''
+            local path_end = Path:new(info.name):normalize(cwd) or ''
 
 
             local element = {
@@ -163,7 +164,7 @@ function make_entry(_)
   local icon_width = 0
   if not disable_devicons then
     local icon, _ = utils.get_devicons('fname', disable_devicons)
-    icon_width = utils.strdisplaywidth(icon)
+    icon_width = strings.strdisplaywidth(icon)
   end
 
 
