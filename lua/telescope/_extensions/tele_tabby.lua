@@ -120,7 +120,7 @@ local function make_entry(opts)
     -- but showing a window has an edited buffer is useful
     -- ]]
     local hidden = entry.info.hidden == 1 and 'h' or 'a'
-    local readonly = vim.api.nvim_buf_get_option(entry.bufnr, 'readonly') and '=' or ' '
+    local readonly = vim.api.nvim_buf_get_option(entry.bufnr or 0, 'readonly') and '=' or ' '
     local changed = entry.info.changed == 1 and '+' or ' '
     local indicator = entry.windownr .. hidden .. readonly .. changed
 
