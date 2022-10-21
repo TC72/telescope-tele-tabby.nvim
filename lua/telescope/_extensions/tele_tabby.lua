@@ -182,44 +182,50 @@ local function list(opts)
             -- the bufnr
             local bufnr = vim.api.nvim_win_get_buf(windowid)
 
-            -- find the cwd of this window, check in order of priority, lcd, tcd, cwd
-            local cwd = vim.fn.expand(
-                vim.fn.haslocaldir( windownr, tabidx ) and vim.fn.getcwd( windownr, tabidx ) or
-                vim.fn.haslocaldir( -1, tabidx ) and vim.fn.getcwd( -1, tabidx) or
-                vim.fn.getcwd()
-            )
+            -- check the buftype
+            -- if it's not empty then don't include it
+            local buftype = vim.fn.getbufvar(bufnr,'&buftype')
 
-            -- find the "project root" from the cwd, for now look for .git
-            -- TODO - allow a user to configure how we find the project root
-            --local git_root = vim.fn.systemlist("git -C " .. cwd .. " rev-parse --show-toplevel")[1]
-            --local git_root = require('lspconfig.util').root_pattern(".git")(cwd)
-            local git_root =  root_pattern(cwd, '%.git$')
+            if buftype == '' then
+                -- find the cwd of this window, check in order of priority, lcd, tcd, cwd
+                local cwd = vim.fn.expand(
+                    vim.fn.haslocaldir( windownr, tabidx ) and vim.fn.getcwd( windownr, tabidx ) or
+                    vim.fn.haslocaldir( -1, tabidx ) and vim.fn.getcwd( -1, tabidx) or
+                    vim.fn.getcwd()
+                )
 
-            local project_root = vim.fn.expand( opts.project_root or git_root or cwd)
-            -- include the parent directory of the .git file
-            project_root = project_root:gsub('[^/]+/?$', '')
+                -- find the "project root" from the cwd, for now look for .git
+                -- TODO - allow a user to configure how we find the project root
+                --local git_root = vim.fn.systemlist("git -C " .. cwd .. " rev-parse --show-toplevel")[1]
+                --local git_root = require('lspconfig.util').root_pattern(".git")(cwd)
+                local git_root =  root_pattern(cwd, '%.git$')
 
-
-            -- split the path
-            -- path_start - from the project_root to the cwd, including the name
-            -- path_end - from the cwd to the file
-
-            --local path_start = path.normalize( cwd, project_root:gsub ('[^/]+/?$', '') )
-            local path_start = Path:new(cwd):normalize(project_root)
-            local info = vim.fn.getbufinfo(bufnr)[1]
-            local path_end = Path:new(info.name):normalize(cwd) or ''
+                local project_root = vim.fn.expand( opts.project_root or git_root or cwd)
+                -- include the parent directory of the .git file
+                project_root = project_root:gsub('[^/]+/?$', '')
 
 
-            local element = {
-                path_start = path_start,
-                path_end = path_end,
-                tabnr = tabnr,
-                tabidx = tabidx,
-                windownr = windownr,
-                windowid = windowid,
-                info = info
-            }
-            table.insert(windows, element)
+                -- split the path
+                -- path_start - from the project_root to the cwd, including the name
+                -- path_end - from the cwd to the file
+
+                --local path_start = path.normalize( cwd, project_root:gsub ('[^/]+/?$', '') )
+                local path_start = Path:new(cwd):normalize(project_root)
+                local info = vim.fn.getbufinfo(bufnr)[1]
+                local path_end = Path:new(info.name):normalize(cwd) or ''
+
+
+                local element = {
+                    path_start = path_start,
+                    path_end = path_end,
+                    tabnr = tabnr,
+                    tabidx = tabidx,
+                    windownr = windownr,
+                    windowid = windowid,
+                    info = info
+                }
+                table.insert(windows, element)
+            end
         end
     end
 
